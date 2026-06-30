@@ -1,9 +1,9 @@
 ---
-name: show-your-shit
-description: 定位你的ai编程。Maintain a Chinese-first live Markdown monitor for AI-assisted programming work, especially when the user asks for automated updates, says update my md, wants every interaction or code output recorded, or needs progress through messy legacy code exposed. Use when the user wants to understand what Codex is doing, asks for a Chinese template, real-time visibility, progress monitoring, function locations, code-section explanations, beginner-friendly verification steps, an AI worklog, a flowchart, a decision log, a summary of coding work, or explicitly asks to use $show-your-shit while implementing, debugging, reviewing, testing, refactoring, or planning code changes.
+name: code-cctv
+description: Code CCTV 定位你的ai编程。Maintain a Chinese-first live Markdown monitor for AI-assisted programming work, especially when the user asks for automated updates, says update my md, wants every interaction or code output recorded, or needs progress through messy legacy code exposed. Use when the user wants to understand what Codex is doing, asks for a Chinese template, real-time visibility, progress monitoring, function locations, code-section explanations, beginner-friendly verification steps, an AI worklog, a flowchart, a decision log, a summary of coding work, or explicitly asks to use $code-cctv while implementing, debugging, reviewing, testing, refactoring, or planning code changes.
 ---
 
-# show your shit
+# Code CCTV
 
 Use this skill to make programming work observable. Keep a Markdown file named `AI_WORKLOG.md` in the current workspace root unless the user names another file. Prefer the Chinese template by default.
 
@@ -38,7 +38,7 @@ Do not wait for a final summary to update the monitor. The point of this skill i
 Use these Chinese sections in this order:
 
 ````markdown
-# show your shit
+# Code CCTV
 
 最后更新：YYYY-MM-DD HH:MM:SS CST
 状态：侦察中 | 制定方案 | 修改中 | 验证中 | 阻塞 | 完成

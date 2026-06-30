@@ -10,10 +10,12 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 
-START = "<!-- show-your-shit:start -->"
-END = "<!-- show-your-shit:end -->"
-LEGACY_START = "<!-- ai-work-monitor:start -->"
-LEGACY_END = "<!-- ai-work-monitor:end -->"
+START = "<!-- code-cctv:start -->"
+END = "<!-- code-cctv:end -->"
+LEGACY_START = "<!-- show-your-shit:start -->"
+LEGACY_END = "<!-- show-your-shit:end -->"
+OLDER_LEGACY_START = "<!-- ai-work-monitor:start -->"
+OLDER_LEGACY_END = "<!-- ai-work-monitor:end -->"
 DEFAULT_TZ = "Asia/Shanghai"
 DEFAULT_LANGUAGE = "zh"
 
@@ -122,14 +124,14 @@ ZH_CELL_TRANSLATIONS = {
     "Deterministic Markdown worklog updater": "确定性的 Markdown 工作日志更新脚本",
     "Plugin name and display copy": "插件名称和显示文案",
     "Skill name, trigger, and script path": "技能名称、触发词和脚本路径",
-    "Marketplace entry now points to show-your-shit": "插件市场入口已指向 show-your-shit",
+    "Marketplace entry now points to show-your-shit": "历史记录：插件市场入口曾指向旧名 show-your-shit",
     "Generated title, markers, and legacy compatibility": "生成标题、区块标记和旧版兼容",
     "Use a plugin-backed skill": "使用插件承载 skill",
     "The user asked for a skill or plugin, and a plugin makes the monitor visible in Codex plugin UI": "用户要求技能或插件，而插件能在 Codex 插件界面中可见",
     "Requires installing/enabling the local plugin after creation": "创建后需要安装或启用本地插件",
-    "Use show-your-shit as the machine name": "使用 show-your-shit 作为机器名",
+    "Use show-your-shit as the machine name": "历史记录：曾使用 show-your-shit 作为机器名",
     "Codex plugin and skill IDs require lowercase hyphen-case": "Codex 插件和 skill ID 需要小写短横线命名",
-    "The user-facing display name remains show your shit": "用户看到的显示名仍是 show your shit",
+    "The user-facing display name remains show your shit": "历史记录：旧显示名是 show your shit",
     "system python validator": "系统 Python 校验器",
     "temporary PyYAML install": "临时安装 PyYAML",
     "update_worklog.py syntax": "update_worklog.py 语法检查",
@@ -141,10 +143,10 @@ ZH_CELL_TRANSLATIONS = {
     "Skill is valid": "skill 有效",
     "Plugin validation passed": "插件校验通过",
     "py_compile completed without errors": "py_compile 已无错误完成",
-    "Existing AI_WORKLOG.md was rewritten into show-your-shit markers": "已将现有 AI_WORKLOG.md 重写为 show-your-shit 标记",
-    "Example monitor regenerated with show-your-shit markers": "示例监控文件已用 show-your-shit 标记重新生成",
+    "Existing AI_WORKLOG.md was rewritten into show-your-shit markers": "历史记录：曾将 AI_WORKLOG.md 重写为旧版 show-your-shit 标记",
+    "Example monitor regenerated with show-your-shit markers": "历史记录：示例监控文件曾用旧版 show-your-shit 标记重新生成",
     "Skill UI 文案改为中文导向": "skill 界面文案改为中文导向",
-    "codex plugin add show-your-shit@personal after function map": "函数定位版本插件安装",
+    "codex plugin add show-your-shit@personal after function map": "历史记录：旧名函数定位版本插件安装",
 }
 ZH_SUBSTRING_TRANSLATIONS = {
     " and /": " 和 /",
@@ -379,6 +381,8 @@ def section_markers(text: str) -> tuple[str, str] | None:
         return START, END
     if LEGACY_START in text and LEGACY_END in text:
         return LEGACY_START, LEGACY_END
+    if OLDER_LEGACY_START in text and OLDER_LEGACY_END in text:
+        return OLDER_LEGACY_START, OLDER_LEGACY_END
     return None
 
 
@@ -434,7 +438,7 @@ def render_worklog(worklog: Worklog, timestamp: str, language: str) -> str:
     labels = TEXT[language]
     risks = "\n".join(f"- {risk}" for risk in worklog.risks) if worklog.risks else f"- {labels['none']}"
     return f"""{START}
-# show your shit
+# Code CCTV
 
 {labels["last_updated"]}：{timestamp}
 {labels["status"]}：{worklog.status}

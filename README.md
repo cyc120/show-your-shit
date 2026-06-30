@@ -1,10 +1,10 @@
-# show your shit
+# Code CCTV
 
 定位你的ai编程。
 
-`show your shit` 是一个 Codex 本地插件，用中文 `AI_WORKLOG.md` 把 AI 辅助编程过程展开给人看。它适合在你看不懂 AI 正在改什么、为什么这么改、改动到底落在哪些函数和代码段时使用。
+`Code CCTV` 是一个 Codex 本地插件，用中文 `AI_WORKLOG.md` 把 AI 辅助编程过程展开给人看。它适合在你看不懂 AI 正在改什么、为什么这么改、改动到底落在哪些函数和代码段时使用。
 
-名字里的 `shit` 来自“屎山代码”的玩笑：不是骂人，是让 AI 别把处理屎山代码的过程藏起来。
+名字里的 `CCTV` 是玩笑版“代码监控摄像头”：不是偷偷监视人，而是让 AI 别把处理屎山代码的过程藏起来。
 
 ## 它解决什么
 
@@ -38,13 +38,13 @@
 开启文件监听器：
 
 ```bash
-python3 ~/plugins/show-your-shit/scripts/watch_worklog.py --workspace "$PWD"
+python3 ~/plugins/code-cctv/scripts/watch_worklog.py --workspace "$PWD"
 ```
 
 只检查一次文件变化：
 
 ```bash
-python3 ~/plugins/show-your-shit/scripts/watch_worklog.py --workspace "$PWD" --once
+python3 ~/plugins/code-cctv/scripts/watch_worklog.py --workspace "$PWD" --once
 ```
 
 建议写代码时同时打开 `AI_WORKLOG.md` 预览。Codex 负责记录交互和代码输出，监听器负责补充磁盘文件变化。
@@ -55,17 +55,17 @@ python3 ~/plugins/show-your-shit/scripts/watch_worklog.py --workspace "$PWD" --o
 
 ```bash
 mkdir -p ~/plugins
-git clone https://github.com/cyc120/show-your-shit.git ~/plugins/show-your-shit
+git clone https://github.com/cyc120/code-cctv.git ~/plugins/code-cctv
 ```
 
 如果你还没有个人插件市场，可以创建或编辑 `~/.agents/plugins/marketplace.json`，在 `plugins` 数组里加入：
 
 ```json
 {
-  "name": "show-your-shit",
+  "name": "code-cctv",
   "source": {
     "source": "local",
-    "path": "./plugins/show-your-shit"
+    "path": "./plugins/code-cctv"
   },
   "policy": {
     "installation": "AVAILABLE",
@@ -85,10 +85,10 @@ git clone https://github.com/cyc120/show-your-shit.git ~/plugins/show-your-shit
   },
   "plugins": [
     {
-      "name": "show-your-shit",
+      "name": "code-cctv",
       "source": {
         "source": "local",
-        "path": "./plugins/show-your-shit"
+        "path": "./plugins/code-cctv"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -103,13 +103,13 @@ git clone https://github.com/cyc120/show-your-shit.git ~/plugins/show-your-shit
 然后安装插件：
 
 ```bash
-codex plugin add show-your-shit@personal
+codex plugin add code-cctv@personal
 ```
 
 更新本地插件后，可以重新安装一次，让 Codex 读取最新版本：
 
 ```bash
-codex plugin add show-your-shit@personal
+codex plugin add code-cctv@personal
 ```
 
 ## 使用
@@ -117,13 +117,13 @@ codex plugin add show-your-shit@personal
 新开 Codex 线程后，可以直接这样说：
 
 ```text
-使用 $show-your-shit，开启自动更新模式。只要有交互、代码输出、工具命令、文件编辑或验证结果，就更新 AI_WORKLOG.md。
+使用 $code-cctv，开启自动更新模式。只要有交互、代码输出、工具命令、文件编辑或验证结果，就更新 AI_WORKLOG.md。
 ```
 
 也可以更具体：
 
 ```text
-使用 $show-your-shit，帮我修这个 bug。请在 AI_WORKLOG.md 里定位每个相关函数，说明每段关键代码在干嘛，并给我小白也能照着检查的核对清单。
+使用 $code-cctv，帮我修这个 bug。请在 AI_WORKLOG.md 里定位每个相关函数，说明每段关键代码在干嘛，并给我小白也能照着检查的核对清单。
 ```
 
 ## 脚本
@@ -170,7 +170,7 @@ python3 scripts/watch_worklog.py --workspace "$PWD"
 
 ## 当前限制
 
-- 它不是全局后台聊天监听器；需要在任务中启用 `$show-your-shit`，由 Codex 按交互和代码输出维护日志。
+- 它不是全局后台聊天监听器；需要在任务中启用 `$code-cctv`，由 Codex 按交互和代码输出维护日志。
 - `watch_worklog.py` 监听的是文件变化，不读取聊天消息。
 - 函数扫描目前主要覆盖 Python、JavaScript、TypeScript 的常见函数形态。
 - 扫描结果只是定位骨架，真正准确的解释仍需要 Codex 结合项目上下文补全。
