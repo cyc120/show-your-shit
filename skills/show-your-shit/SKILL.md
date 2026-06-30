@@ -1,27 +1,37 @@
 ---
 name: show-your-shit
-description: 定位你的ai编程。Maintain a Chinese-first live Markdown monitor for AI-assisted programming work, especially when exposing progress through shit mountain code or messy legacy code. Use when the user wants to understand what Codex is doing, asks for a Chinese template, real-time visibility, progress monitoring, function locations, code-section explanations, beginner-friendly verification steps, an AI worklog, a flowchart, a decision log, a summary of coding work, or explicitly asks to use $show-your-shit while implementing, debugging, reviewing, testing, refactoring, or planning code changes.
+description: 定位你的ai编程。Maintain a Chinese-first live Markdown monitor for AI-assisted programming work, especially when the user asks for automated updates, says update my md, wants every interaction or code output recorded, or needs progress through messy legacy code exposed. Use when the user wants to understand what Codex is doing, asks for a Chinese template, real-time visibility, progress monitoring, function locations, code-section explanations, beginner-friendly verification steps, an AI worklog, a flowchart, a decision log, a summary of coding work, or explicitly asks to use $show-your-shit while implementing, debugging, reviewing, testing, refactoring, or planning code changes.
 ---
 
 # show your shit
 
 Use this skill to make programming work observable. Keep a Markdown file named `AI_WORKLOG.md` in the current workspace root unless the user names another file. Prefer the Chinese template by default.
 
+When this skill is invoked or implicitly selected, treat the monitor as active for the whole coding task. The user should not need to keep reminding Codex to update the Markdown file.
+
 ## Required behavior
 
 1. At the start of the task, create or refresh `AI_WORKLOG.md` with the current goal, status, and a Mermaid flowchart.
-2. During work, update the file after meaningful state changes:
+2. During work, update the file after every meaningful user interaction, code output, tool batch, file edit, validation run, blocker, changed assumption, or completion step. If the user asks for automated updates, update the file whenever there is interaction or code output, even if no source file changed.
+3. Before producing a substantial code snippet, patch, command sequence, or implementation explanation to the user, record the intent in `AI_WORKLOG.md`; after the tool work or code output, record what actually happened and the evidence.
+4. When using tools, update the file before the first user-visible tool work when feasible and after each meaningful tool batch. For long tasks, do not leave the Markdown stale while Codex continues working.
+5. Keep the monitor factual and compact. Prefer specific files, commands, decisions, and evidence over broad narration.
+6. For code changes or code explanation tasks, fill the function and code-section tables with file paths and line numbers. Explain what each function/section does in beginner-friendly Chinese.
+7. Add beginner verification checks that tell the user exactly what to inspect, how to inspect it, and what result to expect.
+8. Preserve visibility even when no code changes are made. Record analysis-only work, reviewed files, and conclusions.
+9. End every monitored task by writing a final summary section with what changed, verification, residual risks, and next suggested action when useful.
+
+Update triggers include:
    - starting context discovery
    - identifying the likely implementation path
+   - replying to a user follow-up that changes or continues the coding task
+   - outputting code, patches, commands, or implementation details
    - editing files
    - running validation
    - finding a blocker, risk, or changed assumption
    - finishing the task
-3. Keep the monitor factual and compact. Prefer specific files, commands, decisions, and evidence over broad narration.
-4. For code changes or code explanation tasks, fill the function and code-section tables with file paths and line numbers. Explain what each function/section does in beginner-friendly Chinese.
-5. Add beginner verification checks that tell the user exactly what to inspect, how to inspect it, and what result to expect.
-6. Preserve visibility even when no code changes are made. Record analysis-only work, reviewed files, and conclusions.
-7. End every monitored task by writing a final summary section with what changed, verification, residual risks, and next suggested action when useful.
+
+Do not wait for a final summary to update the monitor. The point of this skill is that the Markdown changes while the coding work is happening.
 
 ## Markdown structure
 
@@ -123,10 +133,24 @@ python3 scripts/scan_code_map.py src tests
 
 Treat scanner output as a locator scaffold only. Replace the placeholder purpose and verification text with context-aware Chinese explanations before finalizing the worklog.
 
+For disk-level automatic file-change notes, use the optional watcher:
+
+```bash
+python3 scripts/watch_worklog.py --workspace "$PWD"
+```
+
+Use one-shot mode when a task runner or external editor should trigger a single check:
+
+```bash
+python3 scripts/watch_worklog.py --workspace "$PWD" --once
+```
+
+The watcher records file creation, modification, and deletion into `AI_WORKLOG.md`. It does not read chat messages; interaction and code-output updates remain Codex's responsibility while this skill is active.
+
 Before using the script, inspect `scripts/update_worklog.py` if behavior changes are needed. Otherwise it can be executed directly.
 
 ## Cadence
 
-Update the monitor before user-visible tool work begins when feasible. For longer tasks, update it at least every few tool batches or whenever a user would otherwise be left guessing what is happening.
+Update the monitor before user-visible tool work begins when feasible. For longer tasks, update it after every meaningful interaction or tool batch, and whenever a user would otherwise be left guessing what is happening.
 
-Do not claim that the monitor is automatic background telemetry. It is an explicit work protocol maintained by Codex during the task.
+Do not claim that the monitor is universal background telemetry. It is an explicit work protocol maintained by Codex during the task, plus an optional file watcher for disk changes.

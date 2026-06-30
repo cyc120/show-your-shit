@@ -28,6 +28,27 @@
 
 `AI_WORKLOG.md` 不是后台偷偷采集的遥测，而是 Codex 在工作时主动维护的可读工作日志。它的目标是让你能顺着文件、函数和命令把 AI 的操作查回去。
 
+## 自动更新模式
+
+你要的“边写代码边看流程”主要靠两层实现：
+
+- 技能启用后：只要有用户互动、代码输出、工具命令、文件编辑、验证结果或阻塞信息，Codex 都应该更新 `AI_WORKLOG.md`。
+- 可选文件监听器：`watch_worklog.py` 会监听工作区文件的新增、修改、删除，并自动把变化写进 `AI_WORKLOG.md`。
+
+开启文件监听器：
+
+```bash
+python3 ~/plugins/show-your-shit/scripts/watch_worklog.py --workspace "$PWD"
+```
+
+只检查一次文件变化：
+
+```bash
+python3 ~/plugins/show-your-shit/scripts/watch_worklog.py --workspace "$PWD" --once
+```
+
+建议写代码时同时打开 `AI_WORKLOG.md` 预览。Codex 负责记录交互和代码输出，监听器负责补充磁盘文件变化。
+
 ## 安装
 
 把仓库放到本机插件目录：
@@ -96,7 +117,7 @@ codex plugin add show-your-shit@personal
 新开 Codex 线程后，可以直接这样说：
 
 ```text
-使用 $show-your-shit，用中文实时记录本次改代码过程，并解释函数、代码片段和初学者核对步骤。
+使用 $show-your-shit，开启自动更新模式。只要有交互、代码输出、工具命令、文件编辑或验证结果，就更新 AI_WORKLOG.md。
 ```
 
 也可以更具体：
@@ -107,7 +128,7 @@ codex plugin add show-your-shit@personal
 
 ## 脚本
 
-插件内置两个辅助脚本，Codex 可以在需要时调用。
+插件内置三个辅助脚本，Codex 可以在需要时调用。
 
 更新工作日志：
 
@@ -119,6 +140,12 @@ python3 scripts/update_worklog.py --workspace "$PWD" --language zh --status "侦
 
 ```bash
 python3 scripts/scan_code_map.py src tests
+```
+
+监听文件变化并更新工作日志：
+
+```bash
+python3 scripts/watch_worklog.py --workspace "$PWD"
 ```
 
 扫描脚本只生成行号骨架。真正给初学者看的解释，应该由 Codex 结合上下文补全。
@@ -143,6 +170,7 @@ python3 scripts/scan_code_map.py src tests
 
 ## 当前限制
 
-- 它不是自动后台监控器；需要在任务中启用 `$show-your-shit`，由 Codex 按工作进展维护日志。
+- 它不是全局后台聊天监听器；需要在任务中启用 `$show-your-shit`，由 Codex 按交互和代码输出维护日志。
+- `watch_worklog.py` 监听的是文件变化，不读取聊天消息。
 - 函数扫描目前主要覆盖 Python、JavaScript、TypeScript 的常见函数形态。
 - 扫描结果只是定位骨架，真正准确的解释仍需要 Codex 结合项目上下文补全。
