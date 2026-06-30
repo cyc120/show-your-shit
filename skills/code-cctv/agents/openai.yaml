@@ -1,6 +1,8 @@
 interface:
   display_name: "Code CCTV"
   short_description: "定位你的ai编程"
+  icon_small: "./assets/code-cctv-small.svg"
+  icon_large: "./assets/code-cctv-small.svg"
   brand_color: "#2563EB"
   default_prompt: "使用 $code-cctv，开启自动更新模式，交互或代码输出时更新 AI_WORKLOG.md。"
 
