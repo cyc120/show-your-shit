@@ -18,7 +18,7 @@
 
 ```bash
 mkdir -p ~/plugins
-git clone https://github.com/YOUR_NAME/show-your-shit.git ~/plugins/show-your-shit
+git clone https://github.com/cyc120/show-your-shit.git ~/plugins/show-your-shit
 ```
 
 在个人插件市场文件 `~/.agents/plugins/marketplace.json` 中加入：
